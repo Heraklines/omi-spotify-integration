@@ -29,6 +29,11 @@ class PlaylistOwnerTests(unittest.TestCase):
             result = main.get_user_playlists("fixture-user")
         self.assertEqual(result[0].owner, "Fixture Owner")
 
+    def test_empty_display_name_is_preserved(self):
+        with patch.object(main, "spotify_api_request", return_value={"items": [playlist("")]}):
+            result = main.get_user_playlists("fixture-user")
+        self.assertEqual(result[0].owner, "")
+
     def test_setup_renders_playlist_with_null_owner_name(self):
         def spotify_response(uid, method, endpoint, **kwargs):
             if endpoint == "/me":

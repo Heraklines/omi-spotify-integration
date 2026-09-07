@@ -215,7 +215,9 @@ def get_user_playlists(uid: str, limit: int = 20) -> List[SpotifyPlaylist]:
             id=item["id"],
             name=item["name"],
             description=item.get("description", ""),
-            owner=item["owner"]["display_name"] or item["owner"]["id"],
+            owner=(item["owner"]["display_name"]
+                   if item["owner"]["display_name"] is not None
+                   else item["owner"]["id"]),
             tracks_total=item["tracks"]["total"],
             public=item.get("public", False),
             uri=item["uri"],
